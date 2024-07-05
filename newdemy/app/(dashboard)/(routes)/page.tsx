@@ -1,9 +1,9 @@
-
-export default function Home() {
-  return (
-   <div className="text-blue-500">
-   This is a protected route.
-   
-   </div>
-  );
+const Home = () => {
+    return ( 
+        <div>
+            Protected route abc
+        </div>
+     );
 }
+ 
+export default Home;
