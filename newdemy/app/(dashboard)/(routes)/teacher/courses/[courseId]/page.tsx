@@ -1,3 +1,4 @@
+import TitleForm from "@/components/forms/TitleForm";
 import IconBadge from "@/components/shared/Iconbadge";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
@@ -54,6 +55,7 @@ const CourseIdPage = async({params}:{params:{courseId:string}}) => {
                         <h2 className="text-xl">Customize your course</h2>
 
                     </div>
+                        <TitleForm initialData={course} courseId={course.id} />
                 </div>
 
             </div>
