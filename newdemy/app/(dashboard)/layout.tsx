@@ -12,7 +12,7 @@ const DashboardLayout = ({children}:{children:ReactNode}) => {
             <div className="hidden md:flex flex-col h-full w-56 fixed inset-y-0  z-50">
                 <Sidebar/>
             </div>
-            <main className="md:pl-56">
+            <main className="md:pl-56 pt-[80px]">
             {children}
             </main>
 
