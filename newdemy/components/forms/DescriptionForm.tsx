@@ -13,29 +13,33 @@ import { PencilIcon } from 'lucide-react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
+import { Textarea } from '../ui/textarea';
 
 
-interface TitleFormInterface{
+interface DescriptionFormInterface{
     initialData:{
-        title:string,
+        description:string | null,
     };
     courseId:string;
 
 }
 
 const formSchema=z.object({
-    title:z.string().min(1,{
-        message:"Title is required"
+    description:z.string().min(1,{
+        message:"Description is required"
     }),
 })
 
 
-const TitleForm = ({initialData,courseId}:TitleFormInterface) => {
+const DescriptionForm = ({initialData,courseId}:DescriptionFormInterface) => {
     const router=useRouter();
     const form=useForm<z.infer<typeof formSchema>>({
         resolver:zodResolver(formSchema),
-        defaultValues:initialData
-    });
+        defaultValues:{
+            description:initialData?.description || ""
+        }
+     });
     const [isEditing,setEditing]=useState(false);
     const toggleEdit=()=>{setEditing((current)=>!current)}
 
@@ -57,11 +61,11 @@ const TitleForm = ({initialData,courseId}:TitleFormInterface) => {
     return ( 
         <div className='mt-6 border bg-slate-100 rounded-md p-4'>
             <div className='font-md flex items-center justify-between'>
-                Course Title
+                Course Description
                 <Button onClick={toggleEdit} variant={"ghost"}>
                     {isEditing?(<>Cancel</>):(<>
                         <PencilIcon className='h-4 w-4 mr-2' />
-                        Edit Title
+                        Add Description
                     </>)}
 
                     
@@ -69,17 +73,17 @@ const TitleForm = ({initialData,courseId}:TitleFormInterface) => {
 
             </div>
             {!isEditing && (
-                <p>
-                    {initialData.title}
+                <p className={cn("text-sm mt-2",!initialData.description && "text-slate-500 italic")}>
+                    {initialData.description || "No description"}
                 </p>
             )}
             {isEditing && (
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 mt-4'>
-                        <FormField control={form.control} name="title" render={({field})=>(
+                        <FormField control={form.control} name="description" render={({field})=>(
                             <FormItem>
                                 <FormControl>
-                                    <Input disabled={isSubmitting} placeholder='eg. Devops bootcamp' {...field}/>
+                                    <Textarea disabled={isSubmitting} placeholder='eg.In this course, you will get a complete introduction to devops' {...field}/>
                                 </FormControl>
                                 <FormMessage/>
                             </FormItem>
@@ -101,4 +105,4 @@ const TitleForm = ({initialData,courseId}:TitleFormInterface) => {
      );
 }
  
-export default TitleForm;
+export default DescriptionForm;
