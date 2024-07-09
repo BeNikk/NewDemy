@@ -1,4 +1,5 @@
 import DescriptionForm from "@/components/forms/DescriptionForm";
+import ImageForm from "@/components/forms/imageForm";
 import TitleForm from "@/components/forms/TitleForm";
 import IconBadge from "@/components/shared/Iconbadge";
 import { db } from "@/lib/db";
@@ -59,6 +60,7 @@ const CourseIdPage = async({params}:{params:{courseId:string}}) => {
                     
                             <TitleForm initialData={course} courseId={course.id} />
                             <DescriptionForm initialData={course} courseId={course.id}/>
+                            <ImageForm initialData={course} courseId={course.id}/>
                            
                     
                 </div>
