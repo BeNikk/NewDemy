@@ -1,3 +1,4 @@
+import CategoryForm from "@/components/forms/CategoryForm";
 import DescriptionForm from "@/components/forms/DescriptionForm";
 import ImageForm from "@/components/forms/imageForm";
 import TitleForm from "@/components/forms/TitleForm";
@@ -17,6 +18,11 @@ const CourseIdPage = async({params}:{params:{courseId:string}}) => {
     const course=await db.course.findUnique({
         where:{
             id:params.courseId
+        }
+    });
+    const category=await db.category.findMany({
+        orderBy:{
+            name:"asc"
         }
     });
     if(!course){
@@ -61,7 +67,12 @@ const CourseIdPage = async({params}:{params:{courseId:string}}) => {
                             <TitleForm initialData={course} courseId={course.id} />
                             <DescriptionForm initialData={course} courseId={course.id}/>
                             <ImageForm initialData={course} courseId={course.id}/>
-                           
+                           <CategoryForm initialData={course} courseId={course.id} options={category.map((cat)=>(
+                            {
+                                label:cat.name,
+                                value:cat.id
+                            }
+                           ))}/>
                     
                 </div>
 
