@@ -1,5 +1,6 @@
 import AttachmentForm from "@/components/forms/AttachmentForm";
 import CategoryForm from "@/components/forms/CategoryForm";
+import ChapterForm from "@/components/forms/ChapterForm";
 import DescriptionForm from "@/components/forms/DescriptionForm";
 import ImageForm from "@/components/forms/imageForm";
 import PriceForm from "@/components/forms/PriceForm";
@@ -19,14 +20,23 @@ const CourseIdPage = async({params}:{params:{courseId:string}}) => {
  
     const course=await db.course.findUnique({
         where:{
-            id:params.courseId
+            id:params.courseId,
+            userId:userId
+
+
         },
         include:{
             attachments:{
                 orderBy:{
                     createdAt:"desc"
                 }
+            },
+            chapters:{
+                orderBy:{
+                   position:"asc"
+                }
             }
+
         }
     });
     const category=await db.category.findMany({
@@ -44,7 +54,8 @@ const CourseIdPage = async({params}:{params:{courseId:string}}) => {
         course.description,
         course.imageUrl,
         course.price,
-        course.categoryId
+        course.categoryId,
+        course.chapters.some(chapter=>chapter.isPublished),
     ]
     const totalFields=fieldRequired.length;
     const completedField=fieldRequired.filter(Boolean).length;
@@ -94,9 +105,7 @@ const CourseIdPage = async({params}:{params:{courseId:string}}) => {
                             </h2>
 
                         </div>
-                        <div>
-                            chapters will be added here
-                        </div>
+                        <ChapterForm initialData={course} courseId={course.id}/>
 
                     </div>
                     <div>
