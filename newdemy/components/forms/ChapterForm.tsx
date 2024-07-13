@@ -9,25 +9,24 @@ import {useForm} from "react-hook-form";
 import { Form,FormControl,FormDescription,FormField,FormItem,FormMessage } from '../ui/form';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-import { PencilIcon } from 'lucide-react';
+import { PencilIcon, PlusCircle } from 'lucide-react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Textarea } from '../ui/textarea';
-import { Course } from '@prisma/client';
+import { Chapter, Course } from '@prisma/client';
 
 
 interface ChapterFormInterface{
-    initialData:Course
+    initialData:Course & {chapters:Chapter[]};
     courseId:string;
 
 }
 
 const formSchema=z.object({
-    description:z.string().min(1,{
-        message:"Description is required"
-    }),
+   title:z.string().min(1),
+
 })
 
 
@@ -36,18 +35,22 @@ const ChapterForm = ({initialData,courseId}:ChapterFormInterface) => {
     const form=useForm<z.infer<typeof formSchema>>({
         resolver:zodResolver(formSchema),
         defaultValues:{
-            description:initialData?.description || ""
+            title: ""
+
         }
      });
-    const [isEditing,setEditing]=useState(false);
-    const toggleEdit=()=>{setEditing((current)=>!current)}
+    const [isCreating,setCreating]=useState(false);
+    const [isUpdating,setUpdating]=useState(false);
+    const toggleCreating=()=>{
+        setCreating((current)=>!current)
+    }
 
     const {isSubmitting,isValid}=form.formState;
     const onSubmit=async(values:z.infer<typeof formSchema>)=>{
         try{
-            await axios.patch(`/api/courses/${courseId}`,values);
-            toast.success("Course updated successfully");
-            toggleEdit();
+            await axios.post(`/api/courses/${courseId}/chapters`,values);
+            toast.success("Chapter Created");
+            toggleCreating();
             router.refresh();
 
 
@@ -60,36 +63,32 @@ const ChapterForm = ({initialData,courseId}:ChapterFormInterface) => {
     return ( 
         <div className='mt-6 border bg-slate-100 rounded-md p-4'>
             <div className='font-md flex items-center justify-between'>
-                Course Description
-                <Button onClick={toggleEdit} variant={"ghost"}>
-                    {isEditing?(<>Cancel</>):(<>
-                        <PencilIcon className='h-4 w-4 mr-2' />
-                        Add Description
+                Course chapters
+                <Button onClick={toggleCreating} variant={"ghost"}>
+                    {isCreating?(<>Cancel</>):(<>
+                        <PlusCircle className='h-4 w-4 mr-2' />
+                        Add a chapter
                     </>)}
 
                     
                 </Button>
 
             </div>
-            {!isEditing && (
-                <p className={cn("text-sm mt-2",!initialData.description && "text-slate-500 italic")}>
-                    {initialData.description || "No description"}
-                </p>
-            )}
-            {isEditing && (
+           
+            {isCreating && (
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 mt-4'>
-                        <FormField control={form.control} name="description" render={({field})=>(
+                        <FormField control={form.control} name="title" render={({field})=>(
                             <FormItem>
                                 <FormControl>
-                                    <Textarea disabled={isSubmitting} placeholder='eg.In this course, you will get a complete introduction to devops' {...field}/>
+                                    <Input disabled={isSubmitting} placeholder='eg.Introduction to the course' {...field}/>
                                 </FormControl>
                                 <FormMessage/>
                             </FormItem>
                         )}/>
                         <div className='flex items-center gap-x-2'>
                             <Button disabled={!isValid || isSubmitting}>
-                                Save
+                              Create
                             </Button>
 
                         </div>
@@ -98,6 +97,19 @@ const ChapterForm = ({initialData,courseId}:ChapterFormInterface) => {
 
                 </Form>
             )}
+            {!isCreating && (
+                <div className={cn("text-sm mt-2 ",initialData.chapters.length && "text-slate-500 italic")}>
+                   {!initialData.chapters.length && "No chapters"}
+                   {/* { adding a list of chapters} */}
+                </div>
+            )}
+            {
+                isCreating && (
+                    <p className='text-xs text-muted-foreground mt-4'>
+                        Drag and drop to reorder the chapters
+                    </p>
+                )
+            }
 
 
         </div>
