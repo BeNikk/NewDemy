@@ -1,3 +1,4 @@
+import ChapterDescriptionForm from "@/components/forms/ChapterIdform/ChapterDescriptionForm";
 import ChapterTitleForm from "@/components/forms/ChapterIdform/ChapterTitleForm";
 import IconBadge from "@/components/shared/Iconbadge";
 import { db } from "@/lib/db";
@@ -66,6 +67,7 @@ const ChapterId =async ({params}:{params:{courseId:string,chapterId:string}}) =>
                         </div>
                         {/* {chapter title form} */}
                         <ChapterTitleForm initialData={chapter} courseId={params.courseId} chapterId={params.chapterId}/>
+                        <ChapterDescriptionForm initialData={chapter} courseId={params.courseId} chapterId={params.chapterId}/>
                     </div>
 
                 </div>
