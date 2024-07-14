@@ -16,6 +16,7 @@ import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Textarea } from '../ui/textarea';
 import { Chapter, Course } from '@prisma/client';
+import { ChapterList } from '../shared/ChapterList';
 
 
 interface ChapterFormInterface{
@@ -57,6 +58,24 @@ const ChapterForm = ({initialData,courseId}:ChapterFormInterface) => {
         }catch{
             toast.error("Something went wrong");
         }
+    }
+
+    async function onReorder(updateData:{id:string;position:number}[]){
+        try{
+            setUpdating(true); 
+            const values={list:updateData};
+            await axios.put(`/api/courses/${courseId}/chapters/reorder`,values);
+            toast.success("Chapters reordered");
+            router.refresh();
+
+        }catch(error){
+            toast.error("Something went wrong ");
+        }
+        finally{
+            setUpdating(false);
+        }
+
+
     }
 
 
@@ -101,6 +120,7 @@ const ChapterForm = ({initialData,courseId}:ChapterFormInterface) => {
                 <div className={cn("text-sm mt-2 ",initialData.chapters.length && "text-slate-500 italic")}>
                    {!initialData.chapters.length && "No chapters"}
                    {/* { adding a list of chapters} */}
+                   <ChapterList onEdit={()=>{}} onReorder={onReorder} items={initialData.chapters || []}/>
                 </div>
             )}
             {
