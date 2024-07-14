@@ -9,7 +9,7 @@ import {useForm} from "react-hook-form";
 import { Form,FormControl,FormDescription,FormField,FormItem,FormMessage } from '../ui/form';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-import { PencilIcon, PlusCircle } from 'lucide-react';
+import { Loader2, PencilIcon, PlusCircle } from 'lucide-react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
@@ -77,10 +77,20 @@ const ChapterForm = ({initialData,courseId}:ChapterFormInterface) => {
 
 
     }
+    function onEdit(id:string){
+        router.push(`/teacher/courses/${courseId}/chapters/${id}`);
+
+    }
 
 
     return ( 
-        <div className='mt-6 border bg-slate-100 rounded-md p-4'>
+        <div className=' relative mt-6 border bg-slate-100 rounded-md p-4'>
+            {isUpdating && (
+                <div className='absolute h-full w-full bg-slate-500/20 top-0 right-0 rounded-m flex items-center justify-center'>
+                    <Loader2 className='animate-spin h-6 w-6 text-sky-700 '/>
+
+                    </div>
+            )}
             <div className='font-md flex items-center justify-between'>
                 Course chapters
                 <Button onClick={toggleCreating} variant={"ghost"}>
@@ -120,7 +130,7 @@ const ChapterForm = ({initialData,courseId}:ChapterFormInterface) => {
                 <div className={cn("text-sm mt-2 ",initialData.chapters.length && "text-slate-500 italic")}>
                    {!initialData.chapters.length && "No chapters"}
                    {/* { adding a list of chapters} */}
-                   <ChapterList onEdit={()=>{}} onReorder={onReorder} items={initialData.chapters || []}/>
+                   <ChapterList onEdit={onEdit} onReorder={onReorder} items={initialData.chapters || []}/>
                 </div>
             )}
             {
