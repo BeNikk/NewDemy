@@ -1,6 +1,7 @@
 import ChapterAccessForm from "@/components/forms/ChapterIdform/ChapterAccessform";
 import ChapterDescriptionForm from "@/components/forms/ChapterIdform/ChapterDescriptionForm";
 import ChapterTitleForm from "@/components/forms/ChapterIdform/ChapterTitleForm";
+import ChapterVideoForm from "@/components/forms/ChapterIdform/ChapterVideoForm";
 import IconBadge from "@/components/shared/Iconbadge";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
@@ -85,8 +86,12 @@ const ChapterId =async ({params}:{params:{courseId:string,chapterId:string}}) =>
                 <div>
                     <div className="flex items-center gap-x-2">
                         <IconBadge icon={Video}/>
+                        <h2 className="text-xl">
+                            Add a video
+                        </h2>
 
                     </div>
+                    <ChapterVideoForm initialData={chapter} courseId={params.courseId} chapterId={params.chapterId}/>
                 </div>
 
             </div>
