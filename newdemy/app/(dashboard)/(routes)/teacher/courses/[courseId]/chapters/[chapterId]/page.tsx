@@ -1,4 +1,6 @@
+import { Banner } from "@/components/Banner";
 import ChapterAccessForm from "@/components/forms/ChapterIdform/ChapterAccessform";
+import { ChapterActions } from "@/components/forms/ChapterIdform/ChapterActions";
 import ChapterDescriptionForm from "@/components/forms/ChapterIdform/ChapterDescriptionForm";
 import ChapterTitleForm from "@/components/forms/ChapterIdform/ChapterTitleForm";
 import ChapterVideoForm from "@/components/forms/ChapterIdform/ChapterVideoForm";
@@ -37,9 +39,14 @@ const ChapterId =async ({params}:{params:{courseId:string,chapterId:string}}) =>
     const completedFieds=requiredFields.filter(Boolean).length;
 
     const completionText=`(${completedFieds}/${totalFields})`;
+    const isComplete=requiredFields.every(Boolean);
 
 
     return ( 
+        <>
+        {!chapter.isPublished && (
+            <Banner variant={"warning"} label="This chapter is unpublished. It will not be visible in the course"/>
+        )}
         <div className="p-6 ">
             <div className="flex items-center justify-between">
                 <div className="w-full">
@@ -53,6 +60,7 @@ const ChapterId =async ({params}:{params:{courseId:string,chapterId:string}}) =>
                             <span className="text-sm text-slate-700">Complete all fields {completionText}</span>
 
                         </div>
+                        <ChapterActions disabled={!isComplete} courseId={params.courseId} chapterId={params.chapterId}  isPublished={chapter.isPublished}/>
 
                     </div>
 
@@ -96,6 +104,7 @@ const ChapterId =async ({params}:{params:{courseId:string,chapterId:string}}) =>
 
             </div>
         </div>
+        </>
      );
 }
  
