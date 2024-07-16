@@ -61,7 +61,7 @@ export const ChapterActions=({disabled,courseId,chapterId,isPublished}:ChapterAc
         <>
         <div className="flex items-center gap-x-2">
             <Button onClick={onClick} disabled={disabled} variant={"outline"} size={"sm"}>
-                {isPublished?"UnPublish":"Publish"}
+                {isPublished?"Unpublish":"Publish"}
             </Button>
             <ConfirmModal onConfirm={onDelete}>
 
