@@ -28,7 +28,7 @@ export async function PATCH(req:Request,{params}:{params:{courseId:string,chapte
                 chapterId:params.chapterId
             }
         })
-        if(!chapter || !muxData || chapter.title || chapter.description || chapter.videoUrl){
+        if(!chapter || !muxData || !chapter.title || !chapter.description || !chapter.videoUrl){
             return new NextResponse("Missing required fields",{status:401});
         }
         
@@ -37,8 +37,6 @@ export async function PATCH(req:Request,{params}:{params:{courseId:string,chapte
             where:{
                 id:params.chapterId,
                 courseId:params.courseId,
-
-
             },
             data:{
                 isPublished:false
@@ -64,7 +62,6 @@ export async function PATCH(req:Request,{params}:{params:{courseId:string,chapte
             }
         })
     }
-
 
         return NextResponse.json(publishedChapter);
 

@@ -63,7 +63,6 @@ export async function DELETE(req:Request,{params}:{params:{courseId:string,chapt
             await db.course.update({
                 where:{
                     id:params.courseId,
-                    isPublished:true
                 },
                 data:{
                     isPublished:false
