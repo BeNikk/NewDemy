@@ -6,20 +6,18 @@ async function main(){
             data:[
                 {name:"Computer science"},
                 {name:"Music"},
-                {name:"Fitness & Nutrition"},
+                {name:"Fitness "},
                 {name:"Photography"},
                 {name:"Accounting"},
-                {name:"Medical Science"},
+                {name:"Engineering"},
                 {name:"Filming"},
-
-
 
             ]
         });
         console.log("success");
 
-    }catch{
-        console.log("error occured in putCategory.ts");
+    }catch(error){
+        console.log("error occured in putCategory.ts",error);
     }finally{
         await database.$disconnect();
     }
