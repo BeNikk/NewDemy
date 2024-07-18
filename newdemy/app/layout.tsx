@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
+import { ConfettiProvider } from "@/providers/confettiProvider";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +21,11 @@ export default function RootLayout({
   return (
     <ClerkProvider>
     <html lang="en">
-      <body className={cn("m-0 p-0",inter.className)}>{children}</body>
+      <body className={cn("m-0 p-0",inter.className)}>
+        <ConfettiProvider/>
+        <Toaster/>
+        {children}
+        </body>
     </html>
     </ClerkProvider>
   );
