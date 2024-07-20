@@ -38,6 +38,7 @@ export const VideoPlayer=({playbackId,courseId,chapterId,nextChapterId,isLocked,
             )}
             {!isLocked &&(
                 <MuxPlayer playbackId={playbackId} className={cn(!isReady && "hidden")} title={title} onCanPlay={()=>setReady(true)} onEnded={()=>{}} autoPlay/>
+                //mux player for better controls, otherwise just use a video tag with autoplay and controls attribute and you are good to go .
             )}
 
         </div>
