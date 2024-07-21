@@ -51,7 +51,7 @@ export function Combobox({options,value,onChange}:ComboboxProps) {
           <CommandEmpty>No options found.</CommandEmpty>
           <CommandGroup >
             {options.map((option) => (
-              <CommandList>
+              <CommandList key={option.value}>
               <CommandItem
                 key={option.value}
                 value={option.value}
