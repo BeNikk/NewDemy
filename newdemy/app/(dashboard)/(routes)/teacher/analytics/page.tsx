@@ -1,7 +1,29 @@
-const TeacherAnalytics = () => {
-    return ( <div className="">
-        analytics page
-    </div> );
+import { getAnalytics } from "@/actions/getAnalytics";
+import { Chart } from "@/components/Chart";
+import Datacard from "@/components/DataCard";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
+
+const TeacherAnalytics = async() => {
+    const {userId}=auth();
+    if(!userId){
+        return redirect("/");
+    }
+    const {data,totalRevenue,totalSales}=await getAnalytics(userId);
+
+
+    return(
+        <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <Datacard label="Total Sales" value={totalSales} />
+                <Datacard label="Total Revenue" value={totalRevenue} shouldFormat />
+
+
+            </div>
+            <Chart data={data}/>
+
+        </div>
+    )
 }
  
 export default TeacherAnalytics;
