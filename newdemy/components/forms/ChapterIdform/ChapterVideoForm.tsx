@@ -94,7 +94,7 @@ const ChapterVideoForm = ({initialData,courseId,chapterId}:ChapterVideoInterface
                         onSubmit({videoUrl:url});
                     }}}/>
                     <div className='text-sm text-muted-foreground mt-4  '>
-                        Upload chapter's video
+                        Upload chapter&apos;s video
 
                     </div>
                 </div>
