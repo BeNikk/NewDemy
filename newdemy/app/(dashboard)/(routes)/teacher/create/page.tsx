@@ -49,7 +49,7 @@ const CreateCoursePage = () => {
                 </h1>
                 <p className='text-sm text-slate-600'>
                     What would you want to name your course?
-                    Don't worry you can change it later.
+                    Don&apos;t worry you can change it later.
                 </p>
                 <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
