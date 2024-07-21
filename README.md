@@ -1,4 +1,4 @@
-# newDemy
+# NewDemy
 
 newDemy is a comprehensive Learning Management System (LMS) designed to facilitate online education. Teachers can create, publish, and sell courses, while students can purchase and learn from these courses. The platform is built using modern technologies to ensure a smooth and efficient user experience.
 
