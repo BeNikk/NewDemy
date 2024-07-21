@@ -3,7 +3,7 @@ import { stripe } from "@/lib/stripe";
 import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-export async function POST(req:Request,{params}:{params:{courseId:string}}){
+export async function GET(req:Request,{params}:{params:{courseId:string}}){
     try {
         const user=await currentUser();
         if(!user || !user.id || !user.emailAddresses?.[0]?.emailAddress){
