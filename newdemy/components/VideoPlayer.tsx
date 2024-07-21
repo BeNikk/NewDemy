@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import {Loader2,Lock } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import { useConfettiStore } from "@/hooks/use-confetti";
+import next from "next";
 
 interface VideoPlayerProps{
     playbackId:string,
@@ -22,6 +23,30 @@ interface VideoPlayerProps{
 
 export const VideoPlayer=({playbackId,courseId,chapterId,nextChapterId,isLocked,completeOnEnd,title}:VideoPlayerProps)=>{
     const [isReady,setReady]=useState(false);
+    const router=useRouter();
+    const confetti=useConfettiStore();
+    async function onEnd(){
+        try {
+            if(completeOnEnd){
+                await axios.put(`/api/courses/${courseId}/chapters/${chapterId}/progress`,{
+                    isCompleted:true
+                });
+                if(!nextChapterId){
+                    confetti.onOpen();
+                }
+            }
+            toast.success("Chapter progress updated");
+            router.refresh();
+            if(nextChapterId){
+                router.push(`/courses/${courseId}/chapters/${nextChapterId}`);
+
+            }
+            
+        } catch (error) {
+            toast.error("Something went wrong");
+            
+        }
+    }
     return(
         <div className="relative aspect-video">
             {!isReady && !isLocked && (
@@ -37,7 +62,7 @@ export const VideoPlayer=({playbackId,courseId,chapterId,nextChapterId,isLocked,
                 </div>
             )}
             {!isLocked &&(
-                <MuxPlayer playbackId={playbackId} className={cn(!isReady && "hidden")} title={title} onCanPlay={()=>setReady(true)} onEnded={()=>{}} autoPlay/>
+                <MuxPlayer playbackId={playbackId} className={cn(!isReady && "hidden")} title={title} onCanPlay={()=>setReady(true)} onEnded={onEnd} autoPlay/>
                 //mux player for better controls, otherwise just use a video tag with autoplay and controls attribute and you are good to go .
             )}
 
